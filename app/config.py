@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     ADMINS: list[str]
     CHAT_USERS: list[str]
     TG_COMMAND: str
+    TG_COMMAND1: str
     RANK: str
 
 

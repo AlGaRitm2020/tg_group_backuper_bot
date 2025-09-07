@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import logging
 import random
 import re
@@ -154,6 +155,14 @@ async def anekdot(message: Message):
 async def tg_command(message: Message):
     random_user = random.choice(settings.CHAT_USERS)  # noqa: S311
     await message.answer(f"{random_user} - {settings.RANK}")
+
+
+@dp.message(Command(settings.TG_COMMAND1))
+async def tg_command1(message: Message):
+    random_user = settings.CHAT_USERS[
+        hash(str(datetime.datetime.now().timetuple().tm_yday)) % len(settings.CHAT_USERS)
+    ]
+    await message.answer(f"Сегодняшний {settings.RANK} это {random_user}")
 
 
 @dp.message(~F.text.startswith("/"))
