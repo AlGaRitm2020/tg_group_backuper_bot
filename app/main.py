@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import random
 import re
 import secrets
 import sys
@@ -147,6 +148,12 @@ async def unmute(message: Message):
 async def anekdot(message: Message):
     joke = await get_random_top_shortik()
     await message.answer(joke)
+
+
+@dp.message(Command(settings.TG_COMMAND))
+async def tg_command(message: Message):
+    random_user = random.choice(settings.CHAT_USERS)  # noqa: S311
+    await message.answer(f"{random_user} - {settings.RANK}")
 
 
 @dp.message(~F.text.startswith("/"))

@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     DEST_CHAT_ID: str
     SOURCE_CHAT_ID: str
     ADMINS: list[str]
+    CHAT_USERS: list[str]
+    TG_COMMAND: str
+    RANK: str
 
 
 settings = Settings()
