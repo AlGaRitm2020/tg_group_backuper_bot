@@ -33,7 +33,8 @@ async def roll(message: Message):
             low, high = 1, int(args[0])
         elif len(args) == 2:  # noqa: PLR2004
             low, high = int(args[0]), int(args[1])
-
+        if high > 100_000_000_000:
+            await message.answer("Ага и корову 🐄 в дом 🏠")
         if low > high:
             low, high = high, low
         number = secrets.randbelow(high - low + 1) + low
