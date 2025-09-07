@@ -78,7 +78,7 @@ async def mute(message: Message):
         await message.answer("❌ Неверный формат. Используй только минуты: 1m … 14400m")
         return
 
-    minutes = max(int(match.group(1)), 14400)
+    minutes = min(int(match.group(1)), 14400)
     if not 1 <= minutes <= 14400:
         await message.answer("⚠️ Допустимое время мута — от 1 до 14400 минут.")
         return
