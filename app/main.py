@@ -75,12 +75,12 @@ async def mute(message: Message):
     duration = args[0]
     match = re.match(r"^(\d+)m$", duration)
     if not match:
-        await message.answer("❌ Неверный формат. Используй только минуты: 1m … 5m")
+        await message.answer("❌ Неверный формат. Используй только минуты: 1m … 14400m")
         return
 
-    minutes = int(match.group(1))
-    if not 1 <= minutes <= 5:
-        await message.answer("⚠️ Допустимое время мута — от 1 до 5 минут.")
+    minutes = max(int(match.group(1)), 14400)
+    if not 1 <= minutes <= 14400:
+        await message.answer("⚠️ Допустимое время мута — от 1 до 14400 минут.")
         return
 
     target = message.reply_to_message.from_user
