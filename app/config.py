@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     TOKEN: str
     DEST_CHAT_ID: str
     SOURCE_CHAT_ID: str
+    ADMINS: list[str]
 
 
 settings = Settings()
