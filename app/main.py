@@ -35,6 +35,7 @@ async def roll(message: Message):
             low, high = int(args[0]), int(args[1])
         if high > 100_000_000_000:
             await message.answer("Ага и корову 🐄 в дом 🏠")
+            return
         if low > high:
             low, high = high, low
         number = secrets.randbelow(high - low + 1) + low
