@@ -14,6 +14,7 @@ from aiogram.utils.chat_member import ADMINS
 
 from app.config import settings
 from app.logging_config import setup_logging
+from app.utils import get_random_top_shortik
 
 setup_logging()
 logger = logging.getLogger(__name__)
@@ -93,8 +94,16 @@ async def mute(message: Message):
             f"🔇 Пользователь @{target.username or target.full_name} замучен на {minutes} мин."
         )
     except Exception:
-        logger.exception("Ошибка при mute: target=%s chat=%s", target.username, message.chat.id)
+        logger.exception(
+            "Ошибка при mute: target=%s chat=%s", target.username, message.chat.id
+        )
         await message.answer("❌ Ошибка")
+
+
+@dp.message(Command("anekdot"))
+async def anekdot(message: Message):
+    joke = await get_random_top_shortik()
+    await message.answer(joke)
 
 
 @dp.message(~F.text.startswith("/"))
