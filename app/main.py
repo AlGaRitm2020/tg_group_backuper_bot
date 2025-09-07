@@ -8,6 +8,7 @@ from datetime import timedelta
 from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
 from aiogram.types import ChatPermissions, Message
 from aiogram.utils.chat_member import ADMINS
@@ -100,6 +101,46 @@ async def mute(message: Message):
             "Ошибка при mute: target=%s chat=%s", target.username, message.chat.id
         )
         await message.answer("❌ Ошибка")
+
+
+@dp.message(Command("unmute"))
+async def unmute(message: Message):
+    if not message.reply_to_message:
+        await message.answer(
+            "❌ Нужно ответить на сообщение пользователя, которого хочешь размутить."
+        )
+        return
+
+    target = message.reply_to_message.from_user
+
+    try:
+        await message.bot.restrict_chat_member(
+            chat_id=message.chat.id,
+            user_id=target.id,
+            permissions=ChatPermissions(
+                can_send_messages=True,
+                can_send_media_messages=True,
+                can_send_other_messages=True,
+                can_add_web_page_previews=True,
+                can_send_polls=True,
+                can_invite_users=True,
+                can_pin_messages=True,
+                can_change_info=True,
+            ),
+        )
+        await message.answer(
+            f"🔊 Пользователь @{target.username or target.full_name} размучен!"
+        )
+    except TelegramBadRequest as e:
+        await message.answer(
+            "🛡 Пользователь является администратором — мут не применялся."
+        )
+        logger.warning("TelegramBadRequest при unmute: %s", e)
+    except Exception:
+        logger.exception(
+            "Ошибка при unmute: target=%s chat=%s", target.username, message.chat.id
+        )
+        await message.answer("❌ Произошла ошибка при снятии мута.")
 
 
 @dp.message(Command("anekdot"))
