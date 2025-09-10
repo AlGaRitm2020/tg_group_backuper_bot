@@ -160,9 +160,48 @@ async def tg_command(message: Message):
 @dp.message(Command(settings.TG_COMMAND1))
 async def tg_command1(message: Message):
     random_user = settings.CHAT_USERS[
-        hash(str(datetime.datetime.now().timetuple().tm_yday)) % len(settings.CHAT_USERS)
+        hash(str(datetime.datetime.now().timetuple().tm_yday))
+        % len(settings.CHAT_USERS)
     ]
     await message.answer(f"Сегодняшний {settings.RANK} это {random_user}")
+
+
+@dp.message(Command("ball"))
+async def magic_ball(message: Message):
+    question = message.text.replace("/ball", "").strip()
+
+    if not question:
+        await message.answer(
+            "❌ Нужно задать вопрос.\nПример: /ball Завтра мне повезет?"
+        )
+        return
+
+    answers = [
+        "🎱 Бесспорно!",
+        "🎱 Предрешено.",
+        "🎱 Без сомнений.",
+        "🎱 Определённо да.",
+        "🎱 Можешь быть уверен в этом.",
+        "🎱 Мне кажется — да.",
+        "🎱 Вероятнее всего.",
+        "🎱 Хорошие перспективы.",
+        "🎱 Знаки говорят — да.",
+        "🎱 Да.",
+        "🎱 Пока не ясно, попробуй снова.",
+        "🎱 Спроси позже.",
+        "🎱 Лучше не рассказывать сейчас.",
+        "🎱 Не могу предсказать.",
+        "🎱 Сконцентрируйся и спроси опять.",
+        "🎱 Даже не думай.",
+        "🎱 Мой ответ — нет.",
+        "🎱 По моим данным — нет.",
+        "🎱 Перспективы не очень хорошие.",
+        "🎱 Очень сомнительно.",
+    ]
+
+    answer = random.choice(answers)
+
+    await message.answer(f"❓ {question}\n\n{answer}")
 
 
 @dp.message(~F.text.startswith("/"))
